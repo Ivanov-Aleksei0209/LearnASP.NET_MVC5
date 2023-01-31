@@ -12,8 +12,31 @@ namespace ControllersBasics.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public ActionResult GetBook()
+        {
+            return View();
+        }
+        [HttpPost]
+        public string PostBook() 
+        {
+            string title = Request.Form["title"];
+            string author = Request.Form["author"];
+            return title + " " + author;
+        }
+        public string Square()
+        {
+            int a = Int32.Parse(Request.Params["a"]);
+            int h = Int32.Parse(Request.Params["h"]);
+            double s = a * h / 2;
+            return "<h2>Площадь треугольника с основанием " + a + " и высотой " + h + " равна " + s + "</h2>";
+        }
+        public string GetId(int id)
+        {
+            return id.ToString();
+        }
 
-        public ActionResult About()
+        private ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
