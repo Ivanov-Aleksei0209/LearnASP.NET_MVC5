@@ -9,9 +9,15 @@ namespace ControllersBasics.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ViewResult Index()
         {
-            return View();
+            //ViewData["Head"] = "Hello World!";
+            ViewBag.Head = "Hello World!";
+            ViewBag.Fruit = new List<string>
+            {
+                "apple", "pear", "cherry"
+            };
+            return View(); // new ViewResult
         }
         public ActionResult GetImage() 
         {
