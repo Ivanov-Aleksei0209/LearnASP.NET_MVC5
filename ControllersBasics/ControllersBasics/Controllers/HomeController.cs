@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControllersBasics.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,19 @@ namespace ControllersBasics.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        public ActionResult GetImage() 
+        {
+            string path = "../Content/Images/04.jpg";
+            return new ImageResult(path);
+        }
+        public ActionResult GetHtml()
+        {
+            return new HtmlResult("<h2>Привет мир!</h2>");
+        }
+        public void GetVoid()
+        {
+
         }
         [HttpGet]
         public ActionResult GetBook()
