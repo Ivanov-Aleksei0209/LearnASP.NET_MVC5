@@ -1,8 +1,4 @@
-﻿@*@{
-        //Layout = "~/Views/Shared/_Layout2.cshtml";
-        Layout = null;
-    }*@
-@using BookingAppStore.Models;
+﻿@using BookingAppStore.Models;
 @model IEnumerable<Book>
 @*@model IEnumerable<BookingAppStore.Models.Book>*@
 @{
@@ -28,6 +24,45 @@
         }
     </table>
 </div>
+
+@helper BookList(IEnumerable<Book> books)
+{
+    <ul>
+        @foreach (Book b in books)
+        {
+            <li>@b.Name</li>
+        }
+    </ul>
+}
+<h3>Список книг</h3>
+@BookList(Model)
+
+@*@helper CreateList(string[] all)
+{
+    <ul>
+        @foreach (string s in all)
+        {
+            <li>@s</li>
+        }
+    </ul>
+}*@
+@{
+    string[] cities = new string[] { "Minsk", "Washington", "Ottava", "Paris" };
+}
+
+@{
+    string[] countries = new string[] { "Belarus", "USA", "Canada", "France" };
+}
+
+@using BookingAppStore.Helpers
+@Html.CreateList(cities)
+@ListHelper.CreateList(Html, countries)
+
+@*<h3>Города</h3>
+@CreateList(cities)
+<br />
+<h3>Страны</h3>
+@CreateList(countries)*@
 
 @*@Html.Partial("GetList")*@
 
