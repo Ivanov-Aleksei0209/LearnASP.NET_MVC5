@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -21,16 +22,48 @@ namespace ControllersBasics.Controllers
         }
         public ActionResult GetImage() 
         {
-            string path = "../Content/Images/04.jpg";
+            string path = "~/Content/Images/04.jpg";
             return new ImageResult(path);
         }
         public ActionResult GetHtml()
         {
             return new HtmlResult("<h2>Привет мир!</h2>");
         }
-        public void GetVoid()
+        public RedirectResult GetVoid()
         {
-
+            //return Redirect("/Home/Contact"); // временная переадресация
+            return RedirectPermanent("/Home/Contact"); // постоянная переадресация
+        }
+        // применение нескольких видов переадресации
+        public ActionResult GetVoid_(int id)
+        {
+            if (id > 3)
+            {
+                return Redirect("/Home/Contact");
+            }
+            return View("About");
+        }
+        // применение переадресации по маршруту
+        public ActionResult GetVoidRoute(int id)
+        {
+            if (id > 3)
+            {
+                //return RedirectToRoute(new { controller = "Home", action = "Contact" });
+                return RedirectToAction("Square", "Home", new { a = 10, h = 12 }); // переадресация с помощью перегруженого метода
+                                                                                   // (1 параметр - метод, 2й параметр - контроллер, 3й параметр - входные значения метода)
+            }
+            return View("About");
+        }
+        // Применение статусных кодов
+        public ActionResult GetVoidCode(int id)
+        {
+            if (id > 3)
+            {
+                //return new HttpStatusCodeResult(404);
+                //return HttpNotFound();
+                return new HttpUnauthorizedResult();
+            }
+            return View("About");
         }
         [HttpGet]
         public ActionResult GetBook()
