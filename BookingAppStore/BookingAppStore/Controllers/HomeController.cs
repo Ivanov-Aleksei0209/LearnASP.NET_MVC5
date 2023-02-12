@@ -13,8 +13,14 @@ namespace BookingAppStore.Controllers
         public ActionResult Index()
         {
             var books = db.Books;
+            ViewBag.Message = "Это частичное представление";
             //ViewBag.Books = books;
             return View(books);
+        }
+        public ActionResult GetList()
+        {
+            string[] state = new string[] { "Belarus", "USA", "Canada", "France" };
+            return PartialView(state);
         }
 
         public ActionResult BookIndex()

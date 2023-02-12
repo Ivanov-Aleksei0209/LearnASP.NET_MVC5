@@ -1,12 +1,12 @@
-﻿@*@{ 
-    //Layout = "~/Views/Shared/_Layout2.cshtml";
-    Layout = null;
-}*@
+﻿@*@{
+        //Layout = "~/Views/Shared/_Layout2.cshtml";
+        Layout = null;
+    }*@
 @using BookingAppStore.Models;
 @model IEnumerable<Book>
 @*@model IEnumerable<BookingAppStore.Models.Book>*@
 @{
-            ViewBag.Title = "Book shop";
+    ViewBag.Title = "Book shop";
 }
 <div>
     <h3>Распродажа книг</h3>
@@ -28,6 +28,16 @@
         }
     </table>
 </div>
+
+@*@Html.Partial("GetList")*@
+
+@*альтернативный способ*@
+@*@{ Html.RenderPartial("GetList");}*@
+
+@*@Html.Partial("GetList", new string[] {"Belarus", "USA", "Canada", "France"})*@
+
+@Html.Action("GetList");
+
 @section Footer {
     <h2>Все права защищены. Syte Corp. 2023.</h2>
-    }
+}
