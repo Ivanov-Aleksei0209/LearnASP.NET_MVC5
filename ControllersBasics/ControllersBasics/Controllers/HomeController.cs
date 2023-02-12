@@ -11,6 +11,27 @@ namespace ControllersBasics.Controllers
 {
     public class HomeController : Controller
     {
+        public string GetContext()
+        {
+            string browser = HttpContext.Request.Browser.Browser;
+            string user_agent = HttpContext.Request.UserAgent;
+            string url = HttpContext.Request.RawUrl;
+            string ip = HttpContext.Request.UserHostAddress;
+            string referrer = HttpContext.Request.UrlReferrer == null ? "" : HttpContext.Request.UrlReferrer.AbsoluteUri;
+            return "<p>Browser: " + browser + "</p><p>User-Agent: " + user_agent + "</p><p>Url запроса: " + url +
+                "</p><p>Реферер: " + referrer + "</p><p>IP-адрес: " + ip + "</p>";
+        }
+        public void GetContextResponse()
+        {
+            HttpContext.Response.Write("<h1>Hello, World!!!</h1>");
+            string browser = HttpContext.Request.Browser.Browser;
+            string user_agent = HttpContext.Request.UserAgent;
+            string url = HttpContext.Request.RawUrl;
+            string ip = HttpContext.Request.UserHostAddress;
+            string referrer = HttpContext.Request.UrlReferrer == null ? "" : HttpContext.Request.UrlReferrer.AbsoluteUri;
+            HttpContext.Response.Write("<p>Browser: " + browser + "</p><p>User-Agent: " + user_agent + "</p><p>Url запроса: " + url +
+                "</p><p>Реферер: " + referrer + "</p><p>IP-адрес: " + ip + "</p>");
+        }
         public FilePathResult GetFile()
         {
             // Путь к файлу
@@ -45,9 +66,18 @@ namespace ControllersBasics.Controllers
             string file_name = "Test.txt";
             return File(fs, file_type, file_name);
         }
+        public string GetData()
+        {
+            string id = HttpContext.Request.Cookies["id"].Value;
+            var val = Session["name"];
+            return val.ToString();
+            //return id.ToString();
+        }
         public ViewResult Index()
         {
             //ViewData["Head"] = "Hello World!";
+            Session["name"] = "Tom";
+            HttpContext.Response.Cookies["id"].Value = "ca-4353w";
             ViewBag.Head = "Hello World!";
             ViewBag.Fruit = new List<string>
             {
