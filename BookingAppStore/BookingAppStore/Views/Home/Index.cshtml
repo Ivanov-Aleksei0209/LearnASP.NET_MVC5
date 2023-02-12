@@ -34,18 +34,40 @@
         }
     </ul>
 }
-<h3>Список книг</h3>
-@BookList(Model)
+
+@*<textarea cols="20" id="text" name="text" rows="2">
+    Hello, World!
+    </textarea>*@
+@using (Html.BeginForm("GetForm", "Home", FormMethod.Post))
+{
+    @Html.ListBox("countries", new MultiSelectList(new string[] {"Бразилия", "Аргентина", "Уругвай", "Чили"}))
+
+    @*@Html.DropDownList("author", ViewBag.Authors as SelectList)*@
+    @*@Html.CheckBox("set", false) <span>Включить</span>*@
+    @*@Html.RadioButton("color", "red")
+    <span>Красный</span>
+    <br />
+    @Html.RadioButton("color", "blue")
+    <span>Синий</span>
+    <br />
+    @Html.RadioButton("color", "green", true)
+    <span>Зеленый</span>*@
+    
+    @*@Html.TextArea("text", "Hello, World!", 5, 50, null)*@
+    <input type="submit" value="Send" />
+}
+@*<h3>Список книг</h3>
+    @BookList(Model)*@
 
 @*@helper CreateList(string[] all)
-{
-    <ul>
-        @foreach (string s in all)
-        {
-            <li>@s</li>
-        }
-    </ul>
-}*@
+    {
+        <ul>
+            @foreach (string s in all)
+            {
+                <li>@s</li>
+            }
+        </ul>
+    }*@
 @{
     string[] cities = new string[] { "Minsk", "Washington", "Ottava", "Paris" };
 }
@@ -59,10 +81,10 @@
 @ListHelper.CreateList(Html, countries)
 
 @*<h3>Города</h3>
-@CreateList(cities)
-<br />
-<h3>Страны</h3>
-@CreateList(countries)*@
+    @CreateList(cities)
+    <br />
+    <h3>Страны</h3>
+    @CreateList(countries)*@
 
 @*@Html.Partial("GetList")*@
 
