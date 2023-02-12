@@ -1,6 +1,7 @@
 ﻿using ControllersBasics.Util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -10,6 +11,40 @@ namespace ControllersBasics.Controllers
 {
     public class HomeController : Controller
     {
+        public FilePathResult GetFile()
+        {
+            // Путь к файлу
+            string file_path = Server.MapPath("~/Files/Test.txt");
+            // Тип файла - content-type
+            //string file_type = "application/txt";
+            string file_type = "application/octet-stream"; // Более универсальное указание типа файлов
+            // Имя файла - необязательно
+            string file_name = "Test.txt";
+            return File(file_path, file_type, file_name);
+        }
+        public FileContentResult GetBytes()
+        {
+            // Путь к файлу
+            string path = Server.MapPath("~/Files/Test.txt");
+            byte[] mas = System.IO.File.ReadAllBytes(path);
+            // Тип файла - content-type
+            string file_type = "application/txt";
+            // Имя файла - необязательно
+            string file_name = "Test.txt";
+            return File(mas, file_type, file_name);
+        }
+        public FileStreamResult GetStream()
+        {
+            // Путь к файлу
+            string path = Server.MapPath("~/Files/Test.txt");
+            // Объект Stream
+            FileStream fs = new FileStream(path, FileMode.Open);
+            // Тип файла - content-type
+            string file_type = "application/txt";
+            // Имя файла - необязательно
+            string file_name = "Test.txt";
+            return File(fs, file_type, file_name);
+        }
         public ViewResult Index()
         {
             //ViewData["Head"] = "Hello World!";
