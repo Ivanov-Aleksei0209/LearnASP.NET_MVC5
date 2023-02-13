@@ -1,0 +1,32 @@
+﻿@model BookingAppStore.Models.Book
+
+@{
+    ViewBag.Title = "GetBook";
+}
+
+<h2>GetBook</h2>
+
+@*Использование хелпера DisplayForModel*@
+
+@Html.DisplayForModel()
+
+
+@*Использование строго типизированного хелпера*@
+
+@*@Html.DisplayFor(m => m.Name)
+<br />
+@Html.DisplayFor(m => m.Author)
+<br />
+@Html.DisplayFor(m => m.Price)
+<br />*@
+
+
+@*Использование базового хелпера*@
+
+@*@Html.Display("Name")
+    <br />
+    @Html.Display("Author")
+    <br />
+    @Html.Display("Price")
+    <br />*@
+

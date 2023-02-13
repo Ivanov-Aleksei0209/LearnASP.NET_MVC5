@@ -16,6 +16,14 @@ namespace BookingAppStore.Controllers
             return View(db.Books.ToList());
         }
 
+        public ActionResult GetBook(int id)
+        {
+            Book b = db.Books.Find(id);
+            if (b == null)
+                return HttpNotFound();
+            return View(b);
+        }
+
         [HttpPost]
         public string GetForm(string[] countries)
         {
@@ -45,9 +53,7 @@ namespace BookingAppStore.Controllers
         [HttpGet]
         public ActionResult Buy(int id) 
         {
-            ViewBag.BookId = id;
-            Purchase purchase = new Purchase { BookId = id, Person = "Unknown", Address = "Unknown" };
-            return View(purchase);
+            return View(new Purchase { BookId = id, Person = "Hello", Address = "Unknown" });
         }
         [HttpPost]
         public string Buy(Purchase purchase)
