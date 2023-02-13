@@ -13,13 +13,7 @@ namespace BookingAppStore.Controllers
         BookContext db = new BookContext();
         public ActionResult Index()
         {
-            var books = db.Books;
-            ViewBag.Message = "Это частичное представление";
-            //ViewBag.Books = books;
-
-            SelectList authors = new SelectList(db.Books, "Author", "Name");
-            ViewBag.Authors = authors;
-            return View(books);
+            return View(db.Books.ToList());
         }
 
         [HttpPost]
@@ -33,18 +27,7 @@ namespace BookingAppStore.Controllers
             }
             return "Вы выбрали: " + result;
         }
-        //public string GetForm(string author)
-        //{
-        //    return author;
-        //}
-        //public bool GetForm(bool set)
-        //{
-        //    return set;
-        //}
-        //public string GetForm(string color)
-        //{
-        //    return color;
-        //}
+       
 
 
         public ActionResult GetList()
@@ -89,6 +72,12 @@ namespace BookingAppStore.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
