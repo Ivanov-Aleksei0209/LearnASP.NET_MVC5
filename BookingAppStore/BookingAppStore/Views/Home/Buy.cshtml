@@ -1,4 +1,4 @@
-﻿
+﻿@model BookingAppStore.Models.Purchase
 @{
     ViewBag.Title = "Покупка книги";
 }
@@ -8,15 +8,15 @@
     @using (Html.BeginForm("Buy", "Home", FormMethod.Post))
     {
         @*<input type="hidden" value="@ViewBag.BookId" name="BookId" />*@
-        @Html.Hidden("BookId", ViewBag.BookId as string)
+        @Html.HiddenFor(m => m.BookId)
         <table>
             <tr>
-                <td><p>@Html.Label("Person", "Введите имя")</p></td>
-                <td>@Html.TextBox("Person", "введите имя")</td>
+                <td><p>@Html.LabelFor(m => m.Person, "Введите имя")</p></td>
+                <td>@Html.TextBoxFor(m => m.Person)</td>
             </tr>
             <tr>
                 <td><p>@Html.Label("Address", "Введите адрес")</p></td>
-                <td>@Html.TextBox("Address", "введите адрес")</td>
+                <td>@Html.TextBoxFor(m => m.Address)</td>
             </tr>
             <tr>
                 <td><input type="submit" value="Отправить" /> </td>
