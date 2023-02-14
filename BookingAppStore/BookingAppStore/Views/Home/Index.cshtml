@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Book shop";
 }
+<a href="/Home/Create">Создать</a>
 <div>
     <h3>Распродажа книг</h3>
     <table>
@@ -19,7 +20,7 @@
                 <td><p>@b.Name</p></td>
                 <td><p>@b.Author</p></td>
                 <td><p>@b.Price</p></td>
-                <td><p><a href="/Home/Buy/@b.Id">Купить</a></p></td>
+                <td><p><a href="/Home/Buy/@b.Id">Купить</a>|<a href="/Home/Delete/@b.Id">Удалить</a>|<a href="/Home/Edit/@b.Id">Изменить</a></p></td>
             </tr>
         }
     </table>
@@ -34,66 +35,6 @@
         }
     </ul>
 }
-
-@*<textarea cols="20" id="text" name="text" rows="2">
-    Hello, World!
-    </textarea>*@
-@using (Html.BeginForm("GetForm", "Home", FormMethod.Post))
-{
-    @Html.ListBox("countries", new MultiSelectList(new string[] {"Бразилия", "Аргентина", "Уругвай", "Чили"}))
-
-    @*@Html.DropDownList("author", ViewBag.Authors as SelectList)*@
-    @*@Html.CheckBox("set", false) <span>Включить</span>*@
-    @*@Html.RadioButton("color", "red")
-    <span>Красный</span>
-    <br />
-    @Html.RadioButton("color", "blue")
-    <span>Синий</span>
-    <br />
-    @Html.RadioButton("color", "green", true)
-    <span>Зеленый</span>*@
-    
-    @*@Html.TextArea("text", "Hello, World!", 5, 50, null)*@
-    <input type="submit" value="Send" />
-}
-@*<h3>Список книг</h3>
-    @BookList(Model)*@
-
-@*@helper CreateList(string[] all)
-    {
-        <ul>
-            @foreach (string s in all)
-            {
-                <li>@s</li>
-            }
-        </ul>
-    }*@
-@{
-    string[] cities = new string[] { "Minsk", "Washington", "Ottava", "Paris" };
-}
-
-@{
-    string[] countries = new string[] { "Belarus", "USA", "Canada", "France" };
-}
-
-@using BookingAppStore.Helpers
-@Html.CreateList(cities)
-@ListHelper.CreateList(Html, countries)
-
-@*<h3>Города</h3>
-    @CreateList(cities)
-    <br />
-    <h3>Страны</h3>
-    @CreateList(countries)*@
-
-@*@Html.Partial("GetList")*@
-
-@*альтернативный способ*@
-@*@{ Html.RenderPartial("GetList");}*@
-
-@*@Html.Partial("GetList", new string[] {"Belarus", "USA", "Canada", "France"})*@
-
-@Html.Action("GetList");
 
 @section Footer {
     <h2>Все права защищены. Syte Corp. 2023.</h2>

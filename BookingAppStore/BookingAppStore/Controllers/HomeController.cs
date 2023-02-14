@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Razor.Generator;
 using BookingAppStore.Models;
 
 namespace BookingAppStore.Controllers
@@ -13,9 +15,84 @@ namespace BookingAppStore.Controllers
         BookContext db = new BookContext();
         public ActionResult Index()
         {
-            return View(db.Books.ToList());
+            var books = db.Books;
+
+            return View(books);
+        }
+        [HttpGet]
+        public ActionResult Create()
+        {
+            return View();
         }
 
+        [HttpPost]
+        public ActionResult Create(Book book)
+        {
+            db.Books.Add(book);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        //public ActionResult Delete(int id)
+        //{
+        //    Book b = db.Books.Find(id);
+        //    if (b != null)
+        //    {
+        //        db.Books.Remove(b);
+        //        db.SaveChanges();
+        //    }
+        //    //<img scr = "http://AddressOurSite/Home/Delete/1" />
+        //    //Book b = new Book { Id = id };
+        //    //db.Entry(b).State = EntityState.Deleted;
+        //    //db.SaveChanges();
+
+        //    return RedirectToAction("Index");
+        //}
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            Book b = db.Books.Find(id);
+            if (b == null)
+            {
+                return HttpNotFound();
+            }
+            return View(b);
+        }
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Book b = db.Books.Find(id);
+            if (b == null)
+            {
+                return HttpNotFound();
+            }
+            db.Books.Remove(b);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+            Book book = db.Books.Find(id);
+            if (book != null)
+            {
+                return View(book);
+            }
+            return HttpNotFound();
+        }
+        [HttpPost]
+        public ActionResult Edit(Book book)
+        {
+            db.Entry(book).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
         public ActionResult GetBook(int id)
         {
             Book b = db.Books.Find(id);
