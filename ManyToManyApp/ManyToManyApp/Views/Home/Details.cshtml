@@ -1,0 +1,26 @@
+﻿@model ManyToManyApp.Models.Student
+    @using ManyToManyApp.Models
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Information About Student</h2>
+
+<div class="display-label"><b>Name</b></div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.Name)
+</div>
+
+<div class="display-label"><b>Surname</b></div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.Surname)
+</div>
+
+<div class="display-label"><b>Courses</b></div>
+<ul>
+    @foreach (Course c in Model.Courses)
+            {
+                <li>@c.Name</li>
+            }
+</ul>
