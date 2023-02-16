@@ -1,0 +1,21 @@
+﻿@using MigrateDBApp.Models;
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div>
+    <h3>Index</h3>
+    <table>
+        <tr>
+            <td><p>Name</p></td>
+            <td></td>
+        </tr>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td><p>@b.Name</p></td>
+                <td><p><a href="/Home/Edit/@b.Id">Edit</a>|<a href="/Home/Details/@b.Id">Details</a>|<a href="/Home/Delete/@b.Id">Delete</a></p></td>
+            </tr>
+        }
+    </table>
+</div>
