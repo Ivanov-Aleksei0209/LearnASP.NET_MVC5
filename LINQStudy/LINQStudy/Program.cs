@@ -11,118 +11,100 @@ namespace LINQStudy
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Проекция данных");
-            var people = new List<Person>()
-            {
-                new Person (23, "Tom"),
-                new Person (27, "Bob"),
-                new Person (29, "Sam"),
-                new Person (24, "Alice")
-            };
-            foreach (var person in people)
-                Console.WriteLine($"{person.Name}, {person.Age}");
-            Console.WriteLine();
-            Console.WriteLine("Делаем выборку только значения свойства Name");
-            var names = from p in people select p.Name;
-            foreach (string n in names)
-                Console.WriteLine(n);
-            //Console.ReadLine();
-
-            Console.WriteLine("Проекция данных - метод расширения Select()");
-
-            var namesSelect = people.Select(p => p.Name);
-
-            foreach (string n in namesSelect)
-                Console.WriteLine(n);
-            //Console.ReadLine();
-
-            Console.WriteLine("Создание объектов другого типа");
-            var personel = from p in people
-                           select new
-                           {
-                               FirstName = p.Name,
-                               Year = DateTime.Now.Year - p.Age
-                           };
-            foreach (var p in personel)
-                Console.WriteLine($"{p.FirstName} - {p.Year}");
-            //Console.ReadLine();
-            Console.WriteLine("Создание объектов другого типа через лямбда-функцию");
-            var personelLambda = people.Select(p => new
-            {
-                FirstName = p.Name,
-                Year = DateTime.Now.Year - p.Age
-            });
-            foreach (var p in personel)
-                Console.WriteLine($"{p.FirstName} - {p.Year}");
+            Console.WriteLine("Применение метода Where для фильтрации списка");
+            Console.WriteLine("выберем все строки, длина которых равна 3");
+            string[] people1 = { "Tom", "Alice", "Bob", "Sam", "Tim", "Tomas", "Bill" };
+            var selectedPeople1 = people1.Where(p => p.Length == 3);
+            foreach (string person in selectedPeople1)
+                Console.WriteLine(person);
             //Console.ReadLine();
             Console.WriteLine("");
-            Console.WriteLine("Переменые в запросах и оператор let");
-            var personnel = from p in people
-                            let name = $"Mr. {p.Name}"
-                            let year = DateTime.Now.Year - p.Age
-                            select new
-                            {
-                                Name = name,
-                                Year = year
-                            };
-            foreach (var p in personnel) Console.WriteLine($"{p.Name} - {p.Year}");
+            Console.WriteLine("Аналогичный запрос с помощью операторов LINQ");
+            Console.WriteLine("выберем все строки, длина которых равна 4");
+            var selectedPeopleLinq1 = from p in people1
+                                     where p.Length == 4
+                                     select p;
+            foreach (string person in selectedPeopleLinq1)
+                Console.WriteLine(person);
             //Console.ReadLine();
-            Console.WriteLine();
 
-
-            Console.WriteLine("Выборка из нескольких источников");
-            var courses = new List<Course> { new Course("C#"), new Course("Java") };
-            var students = new List<Student> { new Student("Tom"), new Student("Bob") };
-
-            var enrollments = from course in courses // выбираем по одному курсу
-                              from student in students // выбираем по одному студенту
-                              select new { Student = student.Name, Course = course.Title }; // соединяем каждого студента с каждым курсом
-
-
-            foreach (var enrollment in enrollments)
-                Console.WriteLine($"{enrollment.Student} - {enrollment.Course}");
-            //Console.ReadLine();
-            Console.WriteLine();
-
-
-            Console.WriteLine("SelectMany и сведение объектов");
-            var companies = new List<Company>()
+            Console.WriteLine("");
+            Console.WriteLine("Фильтрация с помощью операторов LINQ");
+            Console.WriteLine("выберем все четные элементы, которые больше 10");
+            int[] numbers = { 1, 2, 3, 4, 10, 34, 5, 55, 66, 77, 8, 88 };
+            // метод расширения
+            Console.WriteLine("метод расширения");
+            var evens1 = numbers.Where(i => i % 2 == 0 && i > 10);
+            foreach (int n in evens1)
+                Console.WriteLine(n);
+            Console.WriteLine("");
+            Console.WriteLine("операторы запросов");
+            // операторы запросов
+            var evens2 = from i in numbers
+                         where i % 2 == 0 && i > 10
+                         select i;
+            foreach (int p in evens2)
+                Console.WriteLine(p);
+            //Console.ReadKey();
+            Console.WriteLine("");
+            Console.WriteLine("************************************************");
+            Console.WriteLine("Выборка сложных объектов");
+            var people2 = new List<Person>
             {
-            new Company("Microsoft", new List<Person> {new Person("Tom"), new Person("Bob")}),
-            new Company("Google" , new List<Person> {new Person("Sam"), new Person("Mike")})
+                new Person ("Tom", 23, new List<string> {"english", "german"}),
+                new Person ("Bob", 27, new List<string> {"english", "french"}),
+                new Person ("Sam", 29, new List<string> {"english", "spanish"}),
+                new Person ("Alice", 24, new List<string> {"spanish", "german"})
             };
-            
-            var employees = companies.SelectMany(c => c.Staff);
+            Console.WriteLine("выберем из тех, которым больше 25 лет");
+            var selectedPeopleLinq2 = from p in people2
+                                  where p.Age > 25
+                                  select p;
+            foreach (Person person in selectedPeopleLinq2)
+                Console.WriteLine($"{person.Name} - {person.Age}");
+            //Console.ReadKey();
 
-            foreach (var emp in employees)
-                Console.WriteLine($"{emp.Name}");
+            Console.WriteLine("Аналогичный запрос с помощью метода расширения Where");
+            var selectedPeople2 = people2.Where(p => p.Age > 25);
+            foreach (Person person in selectedPeople2)
+                Console.WriteLine($"{person.Name} - {person.Age}");
+            //Console.ReadKey();
+            Console.WriteLine("");
+            Console.WriteLine("************************************************");
+            Console.WriteLine("Сложные фильтры");
+            Console.WriteLine("надо отфильтровать пользователей по языку english");
+            var selectedPeopleLinq3 = from person in people2
+                                      from lang in person.Languages
+                                      where person.Age < 28
+                                      where lang == "english"
+                                      select person;
+            foreach (Person person in selectedPeopleLinq3)
+                Console.WriteLine($"{person.Name} - {person.Age}");
+            //Console.ReadKey();
+            Console.WriteLine("Для создания аналогичного запроса с помощью методов расширения применяется метод SelectMany");
+            var selectedPeopleSelectMany = people2.SelectMany(u => u.Languages,
+                (u, l) => new { Person = u, Lang = l })
+                .Where(u => u.Lang == "english" && u.Person.Age < 28)
+                .Select(u => u.Person);
+            foreach (Person person in selectedPeopleSelectMany)
+                Console.WriteLine($"{person.Name} - {person.Age}");
+            //Console.ReadKey();
+            Console.WriteLine("");
+            Console.WriteLine("************************************************");
+            Console.WriteLine("Фильтрация по типу данных");
+
+            var people3 = new List<Person>
+            {
+                new Student("Tom"),
+                new Person("Sam"),
+                new Student("Bob"),
+                new Employee("Mike")
+            };
+            var students = people3.OfType<Student>();
+
+            foreach (var student in students) 
+                Console.WriteLine(student.Name);
             Console.ReadKey();
-            Console.WriteLine("Аналогичный пример с помощью операторов LINQ");
-            var employees1 = from c in companies
-                            from emp in c.Staff
-                            select emp;
-
-            foreach (var emp in employees1)
-                Console.WriteLine($"{emp.Name}");
-            Console.ReadKey();
-
-            Console.WriteLine("Аналогичный пример с помощью операторов LINQ");
-
-            var employees2 = companies.SelectMany(c => c.Staff,
-                (c, emp) => new { Name = emp.Name, Company = c.Name });
-            foreach (var emp in employees2)
-                Console.WriteLine($"{emp.Name} - {emp.Company}");
-            Console.ReadKey();
-
-            Console.WriteLine("Аналогичный пример с помощью операторов запросов");
-            var employees3 = from c in companies
-                             from emp in c.Staff
-                             select new { Name = emp.Name, Company = c.Name };
-
-            foreach (var emp in employees3)
-                Console.WriteLine($"{emp.Name} - {emp.Company}");
-            Console.ReadKey();
-            
         }
     }
 }

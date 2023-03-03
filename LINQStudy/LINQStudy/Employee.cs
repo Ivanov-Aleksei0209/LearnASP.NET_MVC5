@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace LINQStudy
 {
-    public class Student : Person
+    internal class Employee : Person
     {
-        //public string Name { get; set; }
-
-        public Student(string name)
+        public Employee(string name) 
         {
-            Name = name;
+         Name = name;
         }
-
     }
 }
