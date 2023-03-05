@@ -28,5 +28,15 @@ namespace LINQStudy
             Age = age;
             Languages = languages;
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is Person person)
+            return Name == person.Name;
+            return false;
+        }
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }
