@@ -11,54 +11,59 @@ namespace LINQStudy
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Объединение, пересечение и разность коллекций");
-            Console.WriteLine("Разность последовательностей");
-            string[] soft = { "Microsoft", "Google", "Apple" };
-            string[] hard = { "Apple", "IBM", "Samsung" };
+            Console.WriteLine("Агрегатные операции");
+            Console.WriteLine("Метод Aggregate");
+            int[] numbers = { 1, 2, 3, 4, 5 };
 
-            var result = soft.Except(hard);
-            foreach (string s in result)
-                Console.WriteLine(s);
+            int query = numbers.Aggregate((x, y) => x - y);
 
-            Console.WriteLine();
-            Console.WriteLine("Пересечение последовательностей");
-            result = soft.Intersect(hard);
+                Console.WriteLine(query);
 
-            foreach (string s in result)
-                Console.WriteLine(s);
+            query = numbers.Aggregate((x, y) => x + y);
+            Console.WriteLine(query);
 
-            Console.WriteLine();
-            Console.WriteLine("Удаление дубликатов");
-            string[] soft1 = { "Microsoft", "Google", "Apple", "Microsoft", "Apple"  };
-            result = soft1.Distinct();
-
-            foreach (string s in result)
-                Console.WriteLine(s);
+            string[] words = { "Gaudeamus", "igitur", "Juvenes", "dum", "sumus" };
+            var sentence = words.Aggregate("Text:", (first, next) => $"{first} {next}");
+            Console.WriteLine(sentence);
 
             Console.WriteLine();
-            Console.WriteLine("Объединение последовательностей");
-            result = soft.Union(hard);
-
-            foreach (string s in result)
-                Console.WriteLine(s);
-
-            Console.WriteLine();
-            Console.WriteLine("Простое объединение последовательностей");
-            result = soft.Concat(hard);
-
-            foreach (string s in result)
-                Console.WriteLine(s);
+            Console.WriteLine("Получение размера выборки. Метод Count");
+            int[] numbers2 = { 1, 2, 3, 4, 10, 34, 55, 66, 77, 88 };
+            int size = numbers2.Count();
+            Console.WriteLine(size);
+            Console.WriteLine("количество четных чисел, которые больше 10");
+            size = numbers2.Count(i => i % 2 == 0 && i > 10);
+            Console.WriteLine(size);
 
             Console.WriteLine();
-            Console.WriteLine("Работа со сложными объектами");
-            Person[] students = { new Person("Tom"), new Person("Bob"), new Person("Sam") };
-            Person[] employees = { new Person("Tom"), new Person("Bob"), new Person("Mike") };
+            Console.WriteLine("Получение суммы");
+            int sum = numbers2.Sum();
+            Console.WriteLine(sum);
+            Console.WriteLine("Получение суммы в сложных объектах");
+            Person[] people = { new Person(37, "Tom"), new Person(28, "Sam"), new Person(41, "Bob") };
+            int ageSum = people.Sum(p => p.Age);
+            Console.WriteLine(ageSum);
+
+            Console.WriteLine();
+            Console.WriteLine("Максимальное, минимальное и среднее значения");
             
-            Console.WriteLine("Oбъединение последовательностей");
-            var people = students.Union(employees);
-
-            foreach (Person person in people)
-                Console.WriteLine(person.Name);
+            int max = numbers2.Max();
+            int min = numbers2.Min();
+            double average = numbers2.Average();
+            
+            Console.WriteLine($"Min: {min}");
+            Console.WriteLine($"Max: {max}");
+            Console.WriteLine($"Average: {average}");
+            
+            Console.WriteLine("Максимальное, минимальное и среднее значения в сложных объектах");
+            
+            int minAge = people.Min(p => p.Age);
+            int maxAge = people.Max(p => p.Age);
+            double averageAge = people.Average(p => p.Age);
+            
+            Console.WriteLine($"Min: {minAge}");
+            Console.WriteLine($"Max: {maxAge}");
+            Console.WriteLine($"Average: {averageAge}");
             Console.ReadKey();
 
 
