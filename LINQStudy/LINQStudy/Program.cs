@@ -11,100 +11,93 @@ namespace LINQStudy
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Применение метода Where для фильтрации списка");
-            Console.WriteLine("выберем все строки, длина которых равна 3");
-            string[] people1 = { "Tom", "Alice", "Bob", "Sam", "Tim", "Tomas", "Bill" };
-            var selectedPeople1 = people1.Where(p => p.Length == 3);
-            foreach (string person in selectedPeople1)
-                Console.WriteLine(person);
-            //Console.ReadLine();
+            Console.WriteLine("Сортировка");
+            Console.WriteLine("Для сортировки набора данных в LINQ можно применять оператор orderby" +
+                "");
+            int[] numbers = { 3, 12, 4, 10 };
+            var orderedNumbers = from i in numbers
+                                 orderby i
+                                 select i;
+            foreach (int i in orderedNumbers)
+                Console.WriteLine(i);
+            string[] people = { "Tom", "Bob", "Sam" };
+            var orderedPeople = from p in people orderby p select p;
+            foreach (var p in orderedPeople) Console.WriteLine(p);
             Console.WriteLine("");
-            Console.WriteLine("Аналогичный запрос с помощью операторов LINQ");
-            Console.WriteLine("выберем все строки, длина которых равна 4");
-            var selectedPeopleLinq1 = from p in people1
-                                     where p.Length == 4
-                                     select p;
-            foreach (string person in selectedPeopleLinq1)
-                Console.WriteLine(person);
-            //Console.ReadLine();
-
-            Console.WriteLine("");
-            Console.WriteLine("Фильтрация с помощью операторов LINQ");
-            Console.WriteLine("выберем все четные элементы, которые больше 10");
-            int[] numbers = { 1, 2, 3, 4, 10, 34, 5, 55, 66, 77, 8, 88 };
-            // метод расширения
-            Console.WriteLine("метод расширения");
-            var evens1 = numbers.Where(i => i % 2 == 0 && i > 10);
-            foreach (int n in evens1)
-                Console.WriteLine(n);
-            Console.WriteLine("");
-            Console.WriteLine("операторы запросов");
-            // операторы запросов
-            var evens2 = from i in numbers
-                         where i % 2 == 0 && i > 10
-                         select i;
-            foreach (int p in evens2)
+            Console.WriteLine("Вместо оператора orderby можно применять метод расширения OrderBy()");
+            orderedNumbers = numbers.OrderBy(i => i);
+            foreach (int i in orderedNumbers)
+                Console.WriteLine(i);
+            orderedPeople = people.OrderBy(p => p);
+            foreach (var p in orderedPeople) 
                 Console.WriteLine(p);
-            //Console.ReadKey();
-            Console.WriteLine("");
-            Console.WriteLine("************************************************");
-            Console.WriteLine("Выборка сложных объектов");
+            Console.WriteLine();
+
+            Console.WriteLine("Сортировка сложных объектов");
             var people2 = new List<Person>
             {
-                new Person ("Tom", 23, new List<string> {"english", "german"}),
-                new Person ("Bob", 27, new List<string> {"english", "french"}),
-                new Person ("Sam", 29, new List<string> {"english", "spanish"}),
-                new Person ("Alice", 24, new List<string> {"spanish", "german"})
+                new Person(37, "Tom"),
+                new Person(28, "Sam"),
+                new Person(22, "Tom"),
+                new Person(41, "Bob")
             };
-            Console.WriteLine("выберем из тех, которым больше 25 лет");
-            var selectedPeopleLinq2 = from p in people2
-                                  where p.Age > 25
-                                  select p;
-            foreach (Person person in selectedPeopleLinq2)
-                Console.WriteLine($"{person.Name} - {person.Age}");
-            //Console.ReadKey();
+            Console.WriteLine("с помощью оператора orderby");
+            var sortedPeople2 = from p in people2
+                                orderby p.Name
+                                select p;
+            foreach (var p in sortedPeople2) 
+                Console.WriteLine($"{p.Name} - {p.Age}");
+            Console.WriteLine("с помощью метода OrderBy");
+            sortedPeople2 = people2.OrderBy(p => p.Name);
 
-            Console.WriteLine("Аналогичный запрос с помощью метода расширения Where");
-            var selectedPeople2 = people2.Where(p => p.Age > 25);
-            foreach (Person person in selectedPeople2)
-                Console.WriteLine($"{person.Name} - {person.Age}");
-            //Console.ReadKey();
-            Console.WriteLine("");
-            Console.WriteLine("************************************************");
-            Console.WriteLine("Сложные фильтры");
-            Console.WriteLine("надо отфильтровать пользователей по языку english");
-            var selectedPeopleLinq3 = from person in people2
-                                      from lang in person.Languages
-                                      where person.Age < 28
-                                      where lang == "english"
-                                      select person;
-            foreach (Person person in selectedPeopleLinq3)
-                Console.WriteLine($"{person.Name} - {person.Age}");
-            //Console.ReadKey();
-            Console.WriteLine("Для создания аналогичного запроса с помощью методов расширения применяется метод SelectMany");
-            var selectedPeopleSelectMany = people2.SelectMany(u => u.Languages,
-                (u, l) => new { Person = u, Lang = l })
-                .Where(u => u.Lang == "english" && u.Person.Age < 28)
-                .Select(u => u.Person);
-            foreach (Person person in selectedPeopleSelectMany)
-                Console.WriteLine($"{person.Name} - {person.Age}");
-            //Console.ReadKey();
-            Console.WriteLine("");
-            Console.WriteLine("************************************************");
-            Console.WriteLine("Фильтрация по типу данных");
+            foreach (var p in sortedPeople2)
+                Console.WriteLine($"{p.Name} - {p.Age}");
+            Console.WriteLine();
 
-            var people3 = new List<Person>
-            {
-                new Student("Tom"),
-                new Person("Sam"),
-                new Student("Bob"),
-                new Employee("Mike")
-            };
-            var students = people3.OfType<Student>();
+            Console.WriteLine("Сортировка по возрастанию и убыванию");
+            Console.WriteLine("С помощью ключевых слов ascending (сортировка по возрастанию) и " +
+                "descending (сортировка по убыванию) для оператора orderby");
+            orderedNumbers = from i in numbers
+                             orderby i descending
+                             select i;
+            foreach (int i in orderedNumbers)
+                Console.WriteLine(i);
+            Console.WriteLine("С помощью методa OrderByDescending()");
+            orderedNumbers = numbers.OrderByDescending(n => n);
+            foreach (int i in orderedNumbers)
+                Console.WriteLine(i);
+            Console.WriteLine();
 
-            foreach (var student in students) 
-                Console.WriteLine(student.Name);
+            Console.WriteLine("Множественные критерии сортировки");
+            Console.WriteLine("Сортировка сложных объектов по нескольким полям");
+            Console.WriteLine("с помощью оператора orderby");
+            sortedPeople2 = from p in people2
+                            orderby p.Name, p.Age
+                            select p;
+            foreach (var p in sortedPeople2)
+                Console.WriteLine($"{p.Name} - {p.Age}");
+            Console.WriteLine("Для разных критериев сортировки можно установить направление");
+            sortedPeople2 = from p in people2
+                            orderby p.Name, p.Age descending
+                            select p;
+            foreach (var p in sortedPeople2)
+                Console.WriteLine($"{p.Name} - {p.Age}");
+            Console.WriteLine("С помощью методов расширения через метод ThenBy()(для сортировки по возрастанию) и ThenByDescending() (для сортировки по убыванию)");
+            sortedPeople2 = people2.OrderBy(p => p.Name).ThenByDescending(p => p.Age);
+            foreach (var p in sortedPeople2)
+                Console.WriteLine($"{p.Name} - {p.Age}");
+            Console.WriteLine();
+
+            Console.WriteLine("Переопределение критерия сортировки");
+            Console.WriteLine("Сортировка строк изходя из их длины");
+            string[] peopleMas = new[] {"Kate", "Tom", "Sam", "Mike", "Alice" };
+            var sortedPeopleMas = peopleMas.OrderBy(p => p, new CustomStringComparer());
+
+            foreach (var p in sortedPeopleMas)
+                Console.WriteLine(p);
+
             Console.ReadKey();
+
         }
     }
 }
