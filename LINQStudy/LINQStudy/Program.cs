@@ -11,59 +11,57 @@ namespace LINQStudy
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Агрегатные операции");
-            Console.WriteLine("Метод Aggregate");
-            int[] numbers = { 1, 2, 3, 4, 5 };
+            Console.WriteLine("Методы Skip и Take");
+            Console.WriteLine("Метод Skip");
+            string[] people = { "Tom", "Sam", "Mike", "Kate", "Bob", "Alice" };
+            Console.WriteLine("пропускаем первые два элемента");
+            var result = people.Skip(2);
 
-            int query = numbers.Aggregate((x, y) => x - y);
+            foreach (var item in result) 
+                Console.WriteLine(item);
+            Console.WriteLine("SkipLast(2) пропускаем последние два элемента");
 
-                Console.WriteLine(query);
+            //var result2 = people.SkipLast(2);
 
-            query = numbers.Aggregate((x, y) => x + y);
-            Console.WriteLine(query);
+            //foreach (var item in result)
+            //    Console.WriteLine(item);
+            Console.WriteLine();
+            Console.WriteLine("SkipWhile() пропускает цепочку элементов, начиная с первого элемента, пока они удовлетворяют определенному условию");
 
-            string[] words = { "Gaudeamus", "igitur", "Juvenes", "dum", "sumus" };
-            var sentence = words.Aggregate("Text:", (first, next) => $"{first} {next}");
-            Console.WriteLine(sentence);
+            Console.WriteLine("пропускаем первые элементы, длина которых равна 3");
+            result = people.SkipWhile(p => p.Length == 3);
+
+            foreach (var item in result) Console.WriteLine(item);
 
             Console.WriteLine();
-            Console.WriteLine("Получение размера выборки. Метод Count");
-            int[] numbers2 = { 1, 2, 3, 4, 10, 34, 55, 66, 77, 88 };
-            int size = numbers2.Count();
-            Console.WriteLine(size);
-            Console.WriteLine("количество четных чисел, которые больше 10");
-            size = numbers2.Count(i => i % 2 == 0 && i > 10);
-            Console.WriteLine(size);
+            Console.WriteLine("Take() извлекает определенное число элементов");
+
+            Console.WriteLine("извлекаем первые 3 элемента");
+            result = people.Take(3);
+
+            foreach (var item in result) Console.WriteLine(item);
+            //Console.WriteLine();
+            //Console.WriteLine("TakeLast() извлекает определенное число элементов с конца");
+
+            //Console.WriteLine("извлекаем последние 3 элемента");
+            //result = people.TakeLast(3);
+            //foreach (var item in result) Console.WriteLine(item);
 
             Console.WriteLine();
-            Console.WriteLine("Получение суммы");
-            int sum = numbers2.Sum();
-            Console.WriteLine(sum);
-            Console.WriteLine("Получение суммы в сложных объектах");
-            Person[] people = { new Person(37, "Tom"), new Person(28, "Sam"), new Person(41, "Bob") };
-            int ageSum = people.Sum(p => p.Age);
-            Console.WriteLine(ageSum);
+            Console.WriteLine("TakeWhile() извлекает цепочку элементов, начиная с первого элемента, пока они удовлетворяют определенному условию");
 
+            Console.WriteLine("извлекаем первые элементы, длина которых равна 3");
+            result = people.TakeWhile(p => p.Length == 3);
+
+            foreach (var item in result) Console.WriteLine(item);
             Console.WriteLine();
-            Console.WriteLine("Максимальное, минимальное и среднее значения");
-            
-            int max = numbers2.Max();
-            int min = numbers2.Min();
-            double average = numbers2.Average();
-            
-            Console.WriteLine($"Min: {min}");
-            Console.WriteLine($"Max: {max}");
-            Console.WriteLine($"Average: {average}");
-            
-            Console.WriteLine("Максимальное, минимальное и среднее значения в сложных объектах");
-            
-            int minAge = people.Min(p => p.Age);
-            int maxAge = people.Max(p => p.Age);
-            double averageAge = people.Average(p => p.Age);
-            
-            Console.WriteLine($"Min: {minAge}");
-            Console.WriteLine($"Max: {maxAge}");
-            Console.WriteLine($"Average: {averageAge}");
+            Console.WriteLine("Постраничный вывод");
+
+            Console.WriteLine("пропускаем 3 элемента и выбираем 2 элемента");
+            result = people.Skip(3).Take(2);
+
+            foreach (var item in result) Console.WriteLine(item);
+
             Console.ReadKey();
 
 
