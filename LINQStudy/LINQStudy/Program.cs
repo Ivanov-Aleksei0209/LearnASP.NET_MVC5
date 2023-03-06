@@ -11,57 +11,107 @@ namespace LINQStudy
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Методы Skip и Take");
-            Console.WriteLine("Метод Skip");
-            string[] people = { "Tom", "Sam", "Mike", "Kate", "Bob", "Alice" };
-            Console.WriteLine("пропускаем первые два элемента");
-            var result = people.Skip(2);
-
-            foreach (var item in result) 
-                Console.WriteLine(item);
-            Console.WriteLine("SkipLast(2) пропускаем последние два элемента");
-
-            //var result2 = people.SkipLast(2);
-
-            //foreach (var item in result)
-            //    Console.WriteLine(item);
+            Console.WriteLine("Группировка");
             Console.WriteLine();
-            Console.WriteLine("SkipWhile() пропускает цепочку элементов, начиная с первого элемента, пока они удовлетворяют определенному условию");
-
-            Console.WriteLine("пропускаем первые элементы, длина которых равна 3");
-            result = people.SkipWhile(p => p.Length == 3);
-
-            foreach (var item in result) Console.WriteLine(item);
-
+            Console.WriteLine("Оператор group by");
             Console.WriteLine();
-            Console.WriteLine("Take() извлекает определенное число элементов");
+            Person[] people =
+            {
+                new Person("Tom", "Microsoft"), new Person("Sam", "Google"),
+                new Person("Bob", "JetBrains"), new Person("Mike", "Microsoft"),
+                new Person("Kate", "JetBrains"), new Person("Alice", "Microsoft")
+            };
 
-            Console.WriteLine("извлекаем первые 3 элемента");
-            result = people.Take(3);
+            var companies = from person in people
+                            group person by person.Company;
 
-            foreach (var item in result) Console.WriteLine(item);
-            //Console.WriteLine();
-            //Console.WriteLine("TakeLast() извлекает определенное число элементов с конца");
-
-            //Console.WriteLine("извлекаем последние 3 элемента");
-            //result = people.TakeLast(3);
-            //foreach (var item in result) Console.WriteLine(item);
-
+            foreach (var company in companies)
+            {
+                Console.WriteLine(company.Key);
+                foreach (var person in company)
+                {
+                    Console.WriteLine(person.Name);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("GroupBy");
             Console.WriteLine();
-            Console.WriteLine("TakeWhile() извлекает цепочку элементов, начиная с первого элемента, пока они удовлетворяют определенному условию");
 
-            Console.WriteLine("извлекаем первые элементы, длина которых равна 3");
-            result = people.TakeWhile(p => p.Length == 3);
+            companies = people.GroupBy(p => p.Company);
+            foreach (var company in companies)
+            {
+                Console.WriteLine(company.Key);
 
-            foreach (var item in result) Console.WriteLine(item);
+                foreach (var person in company)
+                {
+                    Console.WriteLine(person.Name);
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Создание нового объекта при группировке");
             Console.WriteLine();
-            Console.WriteLine("Постраничный вывод");
 
-            Console.WriteLine("пропускаем 3 элемента и выбираем 2 элемента");
-            result = people.Skip(3).Take(2);
+            var companies1 = from person in people
+                        group person by person.Company into g
+                        select new {Name = g.Key, Count = g.Count()}; 
+            foreach (var company in companies1)
+            {
+                Console.WriteLine($"{company.Name} : {company.Count}");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Создание нового объекта с помощью метода GroupBy()");
+            Console.WriteLine();
 
-            foreach (var item in result) Console.WriteLine(item);
+            var companies2 = people.GroupBy(p => p.Company)
+                .Select(g => new {Name = g.Key, Count = g.Count()});
 
+            foreach (var company in companies2)
+            {
+                Console.WriteLine($"{company.Name} : {company.Count}");
+            }
+            Console.WriteLine();
+            
+            Console.WriteLine("Вложенные запросы");
+            Console.WriteLine();
+            Console.WriteLine("Создание нового объекта при группировке");
+            Console.WriteLine();
+            var companies3 = from person in people
+                             group person by person.Company into g
+                             select new
+                             {
+                                 Name = g.Key,
+                                 Count = g.Count(),
+                                 Employees = from p in g select p
+                             };
+            foreach (var company in companies3)
+            {
+                Console.WriteLine($"{company.Name} : {company.Count}");
+                foreach (var employee in company.Employees)
+                {
+                    Console.WriteLine(employee.Name);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("Создание нового объекта с помощью метода GroupBy()");
+            Console.WriteLine();
+            var companies4 = people
+                .GroupBy(p => p.Company)
+                .Select(g => new
+                {
+                    Name = g.Key,
+                    Count = g.Count(),
+                    Employees = g.Select(p => p)
+                });
+            foreach (var company in companies4)
+            {
+                Console.WriteLine($"{company.Name} : {company.Count}");
+                foreach (var employee in company.Employees)
+                {
+                    Console.WriteLine(employee.Name);
+                }
+                Console.WriteLine();
+            }
             Console.ReadKey();
 
 

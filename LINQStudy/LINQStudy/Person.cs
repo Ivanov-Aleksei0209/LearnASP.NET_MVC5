@@ -11,8 +11,14 @@ namespace LINQStudy
         public int Age { get; set; }
         public string Name { get; set; }
         public List<string> Languages { get; set; }
+        public string Company { get; set; }
 
         public Person() { }
+        public Person(string name, string company)
+        {
+            Name = name;
+            Company = company;
+        }
         public Person(int age, string name)
         {
             Age = age;
