@@ -12,74 +12,55 @@ namespace LINQStudy
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Соединение коллекций");
+            Console.WriteLine("Проверка наличия и получение элементов");
             Console.WriteLine();
-            Console.WriteLine("Оператор join");
-            Console.WriteLine();
-            Person[] people =
+
+            string[] people = { "Tom", "Tim", "Bob", "Sam" };
+            foreach (string person in people)
             {
-                new Person("Tom", "Microsoft"), new Person("Sam", "Google"),
-                new Person("Bob", "JetBrains"), new Person("Mike", "Microsoft"),
-            };
-
-            Company[] companies =
-            {
-                new Company("Microsoft", "C#"),
-                new Company("Google", "Go"),
-                new Company("Oracle", "Java")
-            };
-
-            var employees = from p in people
-                            join c in companies on p.Company equals c.Title
-                            select new { Name = p.Name, Company = c.Title, Language = c.Language };
-
-            foreach (var emp in employees)
-            {
-                Console.WriteLine($"{emp.Name} - {emp.Company} ({emp.Language})");
-            }
-           
-            Console.WriteLine();
-            Console.WriteLine("Метод Join()");
-            Console.WriteLine();
-
-            var employees2 = people.Join(companies, // второй набор
-                         p => p.Company,            // свойство-селектор объекта из первого набора
-                         c => c.Title,              // свойство-селектор объекта из второго набора
-                         (p, c) => new { Name = p.Name, Company = c.Title, Language = c.Language}); // результат
-
-            foreach (var emp in employees2)
-                Console.WriteLine($"{emp.Name} - {emp.Company} ({emp.Language})");
-            Console.WriteLine();
-            Console.WriteLine("Метод GroupJoin()");
-            Console.WriteLine();
-            var personnel = companies.GroupJoin(people,
-                c => c.Title,
-                p => p.Company,
-                (c, employees3) => new
-                {
-                    Title = c.Title,
-                    Employees3 = employees3
-                });
-            foreach (var company in personnel)
-            {
-                Console.WriteLine(company.Title);
-                foreach (var emp in company.Employees3)
-                {
-                    Console.WriteLine(emp.Name);
-                }
-                Console.WriteLine();
+                Console.WriteLine(person);
             }
             Console.WriteLine();
-            Console.WriteLine("Метод Zip()");
+            Console.WriteLine("Метод All()");
+            Console.WriteLine("проверяем, все ли элементы имеют длину в 3 символа");
+            bool allHas3Chars = people.All(s => s.Length == 3);
+            Console.WriteLine(allHas3Chars);
+            Console.WriteLine("проверяем, все ли строки начинаются на T");
+            bool allStartsWithT = people.All(s => s.StartsWith("T"));
+            Console.WriteLine(allStartsWithT);
             Console.WriteLine();
 
-            var courses = new List<Course> { new Course("C#"), new Course("Java") };
-            var students = new List<Student> { new Student("Tom"), new Student("Bob") };
+            Console.WriteLine("Метод Any()");
+            Console.WriteLine("проверяем, есть ли элементы, которые имеют длину больше 3 символов");
+            bool allHasMore3Chars = people.Any(s => s.Length > 3);
+            Console.WriteLine(allHasMore3Chars);
+            Console.WriteLine("проверяем, есть ли строки, которые начинаются на T");
+            bool anyStartsWithT = people.Any(s => s.StartsWith("T"));
+            Console.WriteLine(anyStartsWithT);
+            Console.WriteLine();
+            
+            Console.WriteLine("Метод Contains()");
+            Console.WriteLine("проверяем, есть ли строка Tom");
+            bool hasTom = people.Contains("Tom");
+            Console.WriteLine(hasTom);
+            Console.WriteLine("проверяем, есть ли строка Mike");
+            bool hasMike = people.Contains("Mike");
+            Console.WriteLine(hasMike);
 
-            //var enrollments = courses.Zip(students);
+            Console.WriteLine();
+            Console.WriteLine("для сравнения объектов применяется реализация метода Equals");
+            
+            Person[] people1 = { new Person("Tom"), new Person("Sam"), new Person("Bob") };
+            
+            var tom = new Person("Tom");
+            var mike = new Person("Mike");
+            Console.WriteLine("проверяем, есть ли строка Tom");
+            hasTom = people1.Contains(tom);
+            Console.WriteLine(hasTom);
+            Console.WriteLine("проверяем, есть ли строка Mike");
+            hasMike = people1.Contains(mike);
+            Console.WriteLine(hasMike);
 
-            //foreach (var enrollment in enrollments)
-            //    Console.WriteLine($"{enrollment.First} - {enrollment.Second}");
 
             Console.ReadKey();
         }
